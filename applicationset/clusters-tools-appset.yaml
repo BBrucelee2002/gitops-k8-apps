@@ -15,37 +15,42 @@ spec:
     spec:
       project: default
       sources:
+        # Source 1: Public Helm chart for Argo CD
         - repoURL: https://argoproj.github.io/argo-helm
           chart: argo-cd
           targetRevision: 8.0.9
-          helm:
-            valueFiles:
-              - values/dev/argocd-values.yaml
 
+        # Source 2: Public Helm chart for cert-manager
         - repoURL: https://charts.jetstack.io
           chart: cert-manager
           targetRevision: v1.17.2
-          helm:
-            valueFiles:
-              - values/dev/cert-manager-values.yaml
 
+        # Source 3: Public Helm chart for external-secrets
         - repoURL: https://charts.external-secrets.io
           chart: external-secrets
           targetRevision: v0.17.0
-          helm:
-            valueFiles:
-              - values/dev/external-secrets-values.yaml
 
+        # Source 4: Public Helm chart for Kubernetes Dashboard
         - repoURL: https://kubernetes.github.io/dashboard/
           chart: kubernetes-dashboard
           targetRevision: 7.12.0
-          helm:
-            valueFiles:
-              - values/dev/dashboard-values.yaml
+
+        # Source 5: Your Git repo with values files (replace with yours)
+        - repoURL: https://github.com/your-username/gitops-k8s-apps
+          targetRevision: HEAD
+          ref: values
+
+      helm:
+        valueFiles:
+          - '{{values}}/values/dev/argocd-values.yaml'
+          - '{{values}}/values/dev/cert-manager-values.yaml'
+          - '{{values}}/values/dev/external-secrets-values.yaml'
+          - '{{values}}/values/dev/dashboard-values.yaml'
 
       destination:
         server: '{{server}}'
         namespace: cluster-tools
+
       syncPolicy:
         automated:
           prune: true
