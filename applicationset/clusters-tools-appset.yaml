@@ -36,7 +36,7 @@ spec:
           targetRevision: 7.12.0
 
         # Source 5: Your Git repo with values files (replace with yours)
-        - repoURL: https://github.com/your-username/gitops-k8s-apps
+        - repoURL: https://github.com/BBrucelee2002/gitops-k8-apps.git
           targetRevision: HEAD
           ref: values
 
