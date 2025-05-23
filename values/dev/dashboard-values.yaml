@@ -1,0 +1,12 @@
+settings:
+  clusterName: self
+
+protocolHttp: true
+
+metricsScraper:
+  enabled: false
+
+fullnameOverride: kubernetes-dashboard
+
+service:
+  type: ClusterIP

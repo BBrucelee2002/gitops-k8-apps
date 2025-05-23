@@ -1,0 +1,17 @@
+server:
+  service:
+    type: LoadBalancer
+  ingress:
+    enabled: false
+
+configs:
+  cm:
+    application.instanceLabelKey: argocd.argoproj.io/instance
+    timeout.reconciliation: 60s
+
+controller:
+  metrics:
+    enabled: true
+
+dex:
+  enabled: false  # Disable Dex if you're not using it

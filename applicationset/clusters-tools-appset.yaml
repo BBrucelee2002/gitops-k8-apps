@@ -1,0 +1,52 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: cluster-tools
+  namespace: argocd
+spec:
+  generators:
+    - list:
+        elements:
+          - name: self
+            server: https://kubernetes.default.svc
+            valuesPath: values/dev
+  template:
+    metadata:
+      name: cluster-tools-{{name}}
+    spec:
+      project: default
+      sources:
+        - repoURL: https://argoproj.github.io/argo-helm
+          chart: argo-cd
+          targetRevision: 8.0.9
+
+          helm:
+            valueFiles:
+              - '{{valuesPath}}/argocd-values.yaml'
+        - repoURL: https://charts.jetstack.io
+          chart: cert-manager
+          targetRevision: v1.17.2
+          helm:
+            valueFiles:
+              - '{{valuesPath}}/cert-manager-values.yaml'
+        - repoURL: https://charts.external-secrets.io
+          chart: external-secrets
+          targetRevision: v0.17.0
+          helm:
+            valueFiles:
+              - '{{valuesPath}}/external-secrets-values.yaml'
+        - repoURL: https://kubernetes.github.io/dashboard/
+          chart: kubernetes-dashboard
+          targetRevision: 7.12.0
+          helm:
+            valueFiles:
+              - '{{valuesPath}}/dashboard-values.yaml'
+      destination:
+        server: '{{server}}'
+        namespace: cluster-tools
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
