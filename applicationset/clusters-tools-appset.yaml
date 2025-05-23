@@ -7,7 +7,7 @@ spec:
   generators:
     - list:
         elements:
-          - name: self
+          - name: dev
             server: https://kubernetes.default.svc
             valuesPath: values/dev
   template:
